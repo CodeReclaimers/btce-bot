@@ -7,13 +7,13 @@ down wacky dependencies, it depends only on my btce-api library:
 
     https://github.com/alanmcintyre/btce-api
     
-and following standard libraries that are "batteries included" with a Python 
-2.7 installation: 
+and the following standard libraries that are "batteries included" with a
+Python 2.7 installation: 
 
-    ????
+    datetime, decimal, threading, time
 
-NOTE: BTC-e is not affiliated with this project; this is a completely independent 
-implementation based on the API description.  Use at your own risk.
+NOTE: BTC-e is not affiliated with this project; this is a completely
+independent implementation based on the API description.  Use at your own risk.
 
 If you find the library useful and would like to donate (and many thanks to 
 those that have donated!), please send some coins here:
