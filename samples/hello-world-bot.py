@@ -36,10 +36,11 @@ class RangeTrader(btcebot.TraderBase):
         max_buy = available / price
         buy_amount = min(max_buy, amount) * self.fee_adjustment
         if buy_amount >= btceapi.min_orders[self.pair]:
-            print "attempting to buy %s %s at %s for %s %s" % (buy_amount, curr1.upper(), price, buy_amount*price, curr2.upper())
+            print "attempting to buy %s %s at %s for %s %s" % (buy_amount, 
+                curr1.upper(), price, buy_amount*price, curr2.upper())
             if self.live_trades:
                 r = self.api.trade(self.pair, "buy", price, buy_amount)
-                print "\tReceived %s" % r.received
+                print "\tReceived %s %s" % (r.received, curr1.upper())
                 # If the order didn't fill completely, cancel the remaining order
                 if r.order_id != 0:
                     print "\tCanceling unfilled portion of order"
@@ -53,10 +54,11 @@ class RangeTrader(btcebot.TraderBase):
         available = getattr(info, "balance_" + curr1)
         sell_amount = min(available, amount) * self.fee_adjustment
         if sell_amount >= btceapi.min_orders[self.pair]:
-            print "attempting to sell %s %s at %s for %s %s" % (sell_amount, curr1.upper(), price, sell_amount*price, curr2.upper())
+            print "attempting to sell %s %s at %s for %s %s" % (sell_amount,
+                curr1.upper(), price, sell_amount*price, curr2.upper())
             if self.live_trades:
                 r = self.api.trade(self.pair, "sell", price, sell_amount)
-                print "\tReceived %s" % r.received
+                print "\tReceived %s %s" % (r.received, curr2.upper())
                 # If the order didn't fill completely, cancel the remaining order
                 if r.order_id != 0:
                     print "\tCanceling unfilled portion of order"
