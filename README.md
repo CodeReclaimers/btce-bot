@@ -21,3 +21,8 @@ those that have donated!), please send some coins here:
     LTC LatrKXtfw66LQUURrxBzCE7cxFc9Sv8FWf
     BTC 16vnh6gwFYLGneBa8JUk7NaXpEt3Qojqs1
 
+If you are completely new to Python and/or programming, you should probably
+look here to get started:
+
+    https://github.com/alanmcintyre/btce-bot/wiki/Getting-started
+
