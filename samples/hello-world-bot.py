@@ -17,6 +17,7 @@ class RangeTrader(btcebot.TraderBase):
     def __init__(self, api, pair, buy_price, sell_price, live_trades = False):
         btcebot.TraderBase.__init__(self, (pair,))
         self.api = api
+        self.pair = pair
         self.buy_price = buy_price
         self.sell_price = sell_price
         self.live_trades = live_trades
