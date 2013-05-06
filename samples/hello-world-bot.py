@@ -1,3 +1,5 @@
+# Copyright (c) 2013 Alan McIntyre
+
 import decimal
 import time
 
@@ -13,8 +15,8 @@ class RangeTrader(btcebot.TraderBase):
     on how to make money trading using this framework).
     '''
     def __init__(self, api, pair, buy_price, sell_price, live_trades = False):
-        btcebot.TraderBase.__init__(self, api)
-        self.pair = pair
+        btcebot.TraderBase.__init__(self, (pair,))
+        self.api = api
         self.buy_price = buy_price
         self.sell_price = sell_price
         self.live_trades = live_trades
@@ -87,7 +89,7 @@ def run(key_file, buy_floor, sell_ceiling, live_trades):
 
     # Create a bot and add the trader to it.
     bot = btcebot.Bot()
-    trader.addToBot(bot)
+    bot.addTrader(trader)
 
     # The bot will provide the traders with updated information every
     # 15 seconds.
