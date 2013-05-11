@@ -81,7 +81,7 @@ class RangeTrader(btcebot.TraderBase):
 def onBotError(msg, tracebackText):
     tstr = time.strftime("%Y/%m/%d %H:%M:%S")
     print "%s - %s" % (tstr, msg)
-    open("logger-bot-error.log", "a").write(
+    open("hello-world-bot-error.log", "a").write(
         "%s - %s\n%s\n%s\n" % (tstr, msg, tracebackText, "-"*80))
             
 def run(key_file, buy_floor, sell_ceiling, live_trades):        
