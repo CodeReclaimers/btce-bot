@@ -46,16 +46,22 @@ class MarketDataLogger(btcebot.TraderBase):
             history.update(t.tid for t in new_trades)
         
        
-
+def onBotError(msg, tracebackText):
+    tstr = time.strftime("%Y/%m/%d %H:%M:%S")
+    print "%s - %s" % (tstr, msg)
+    open("logger-bot-error.log", "a").write(
+        "%s - %s\n%s\n%s\n" % (tstr, msg, tracebackText, "-"*80))
             
 def run(database_path):
-    
     logger= MarketDataLogger(btceapi.all_pairs, database_path)
     #logger= MarketDataLogger(("btc_usd", "ltc_usd"), database_path)
 
     # Create a bot and add the logger to it.
     bot = btcebot.Bot()
     bot.addTrader(logger)
+
+    # Add an error handler so we can print info about any failures
+    bot.addErrorHandler(onBotError)    
 
     # The bot will provide the logger with updated information every
     # 60 seconds.

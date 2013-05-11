@@ -78,6 +78,12 @@ class RangeTrader(btcebot.TraderBase):
             self._attemptSell(bid_price, bid_amount)
 
             
+def onBotError(msg, tracebackText):
+    tstr = time.strftime("%Y/%m/%d %H:%M:%S")
+    print "%s - %s" % (tstr, msg)
+    open("logger-bot-error.log", "a").write(
+        "%s - %s\n%s\n%s\n" % (tstr, msg, tracebackText, "-"*80))
+            
 def run(key_file, buy_floor, sell_ceiling, live_trades):        
     # Load the keys and create an API object from the first one.
     handler = btceapi.KeyHandler(key_file, resaveOnDeletion=True)
@@ -91,6 +97,9 @@ def run(key_file, buy_floor, sell_ceiling, live_trades):
     # Create a bot and add the trader to it.
     bot = btcebot.Bot()
     bot.addTrader(trader)
+    
+    # Add an error handler so we can print info about any failures
+    bot.addErrorHandler(onBotError)    
 
     # The bot will provide the traders with updated information every
     # 15 seconds.
