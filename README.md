@@ -1,6 +1,11 @@
 btce-bot
 ========
 
+NOTE: This is NOT a library of ready-made bots; it's a library that (hopefully)
+makes it easier to write your own bot, because you won't have to fuss with
+a bunch of low-level details.  It's still a work in progress, so if you'd
+like something implemented please feel free to ask for it!
+
 This library provides a simple framework for building trading bots for the 
 BTC-e.com exchange site.  So that you don't have to spend your time chasing
 down wacky dependencies, it depends only on my btce-api library:
