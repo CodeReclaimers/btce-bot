@@ -1,6 +1,7 @@
 # Copyright (c) 2013 Alan McIntyre
 
 import cPickle
+import datetime
 import decimal
 import os.path
 import sqlite3
@@ -117,7 +118,22 @@ class MarketDatabase(object):
 
         self.cursor.executemany("INSERT OR IGNORE INTO trade_history VALUES(?, ?, ?, ?, ?, ?)", trade_data)
         self.connection.commit()
-            
+        
+    def retrieveTradeHistory(self, start_date, end_date, pair):
+        vars = ("tid", "trade_type", "price", "amount", "date", "pair", "trade_type")
+        pair_index = self.pair_to_index['btc_usd']
+        sql = """select tid, trade_type, price, amount, date, pairs.name, trade_types.name
+           from trade_history, pairs, trade_types
+           where pair == ? and date >= ?
+               and date <= ?
+               and trade_history.pair == pairs.id
+               and trade_history.trade_type == trade_types.id
+           order by date"""
+
+        for row in self.cursor.execute(sql, (pair_index, start_date, end_date)):
+            row = dict(zip(vars, row))
+            yield Trade(**row)
+
     def insertDepth(self, dt, pair, asks, bids):
         depth_data = (dt,
                       self.pair_to_index[pair],
@@ -125,3 +141,21 @@ class MarketDatabase(object):
                       cPickle.dumps(bids))
         self.cursor.execute("INSERT INTO depth VALUES(?, ?, ?, ?)", depth_data)
         self.connection.commit()
+
+    def retrieveDepth(self, start_date, end_date, pair = None):
+        pair_index = self.pair_to_index['btc_usd']
+        sql = """select date, asks, bids
+                 from depth, pairs
+                 where pair == ? 
+                     and date >= ?
+                     and date <= ?
+                     and depth.pair == pairs.id
+                 order by date"""
+
+        depth = []               
+        for d, asks, bids in self.cursor.execute(sql, (pair_index, start_date, end_date)):
+            dt, frac = d.split(".")
+            d = datetime.datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
+            asks = cPickle.loads(str(asks))
+            bids = cPickle.loads(str(bids))
+            yield d, asks, bids
