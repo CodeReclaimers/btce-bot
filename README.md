@@ -3,7 +3,7 @@ btce-bot
 
 NOTE: This is NOT a library of ready-made bots; it's a library that (hopefully)
 makes it easier to write your own bot, because you won't have to fuss with
-a bunch of low-level details.  It's still a work in progress, so if you'd
+a bunch of low-level grunt work.  It's still a work in progress, so if you'd
 like something implemented please feel free to ask for it!
 
 This library provides a simple framework for building trading bots for the 
@@ -28,5 +28,5 @@ those that have donated!), please send some coins here:
 If you are completely new to Python and/or programming, you should probably
 look here to get started:
 
-    https://github.com/alanmcintyre/btce-bot/wiki/Getting-started
+    [https://github.com/alanmcintyre/btce-bot/wiki/Getting-started](https://github.com/alanmcintyre/btce-bot/wiki/Getting-started)
 
