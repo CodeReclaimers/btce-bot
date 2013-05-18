@@ -28,5 +28,5 @@ those that have donated!), please send some coins here:
 If you are completely new to Python and/or programming, you should probably
 look here to get started:
 
-    [https://github.com/alanmcintyre/btce-bot/wiki/Getting-started](https://github.com/alanmcintyre/btce-bot/wiki/Getting-started)
+    https://github.com/alanmcintyre/btce-bot/wiki/Getting-started
 
