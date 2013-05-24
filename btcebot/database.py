@@ -142,7 +142,7 @@ class MarketDatabase(object):
         self.cursor.execute("INSERT INTO depth VALUES(?, ?, ?, ?)", depth_data)
         self.connection.commit()
 
-    def retrieveDepth(self, start_date, end_date, pair = None):
+    def retrieveDepth(self, start_date, end_date, pair):
         pair_index = self.pair_to_index[pair]
         sql = """select date, asks, bids
                  from depth, pairs
