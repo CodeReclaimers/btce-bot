@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Copyright (c) 2013 Alan McIntyre
 
 import decimal
@@ -129,6 +130,10 @@ if __name__ == '__main__':
                         help='Price at or above which we will sell.')
     parser.add_argument('--live-trades', default=False, action="store_true",
                         help='Actually make trades.')
-
+    
     args = parser.parse_args()
+    
+    if args.buy_floor >= args.sell_ceiling:
+        raise Exception("Buy price should probably be below sell price!")
+    
     run(args.key_file, args.buy_floor, args.sell_ceiling, args.live_trades) 

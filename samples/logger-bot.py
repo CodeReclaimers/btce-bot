@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Copyright (c) 2013 Alan McIntyre
 
 import time
