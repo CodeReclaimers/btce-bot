@@ -66,6 +66,7 @@ def _runBot(bot):
             try:
                 handler(datetime.datetime.now())
             except:
+                # TODO: refactor this somewhere
                 t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                 print "%s Error while calling loop end handler (%r): %s" % (t, handler, traceback.format_exc())
                 
