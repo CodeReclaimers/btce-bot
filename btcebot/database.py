@@ -155,6 +155,7 @@ class MarketDatabase(object):
         depth = []               
         for d, asks, bids in self.cursor.execute(sql, (pair_index, start_date, end_date)):
             dt, frac = d.split(".")
+            # TODO: refactor this somewhere
             d = datetime.datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
             asks = cPickle.loads(str(asks))
             bids = cPickle.loads(str(bids))
