@@ -121,7 +121,7 @@ class MarketDatabase(object):
         
     def retrieveTradeHistory(self, start_date, end_date, pair):
         vars = ("tid", "trade_type", "price", "amount", "date", "pair", "trade_type")
-        pair_index = self.pair_to_index['btc_usd']
+        pair_index = self.pair_to_index[pair]
         sql = """select tid, trade_type, price, amount, date, pairs.name, trade_types.name
            from trade_history, pairs, trade_types
            where pair == ? and date >= ?
@@ -143,7 +143,7 @@ class MarketDatabase(object):
         self.connection.commit()
 
     def retrieveDepth(self, start_date, end_date, pair = None):
-        pair_index = self.pair_to_index['btc_usd']
+        pair_index = self.pair_to_index[pair]
         sql = """select date, asks, bids
                  from depth, pairs
                  where pair == ? 
