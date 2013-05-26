@@ -19,22 +19,16 @@ def _runBot(bot):
         for handler, pairs in bot.depthHandlers:
             depthPairs.update(pairs)
             
+        # Get current depth
         depths = {}
+        conn = btceapi.BTCEConnection()
         for p in depthPairs:
             try:
-                asks, bids = btceapi.getDepth(p)
+                asks, bids = btceapi.getDepth(p, conn)
                 depths[p] = (datetime.datetime.now(), asks, bids)
             except:
                 bot.onDepthRetrievalError(p, traceback.format_exc())
-
-        for p, (t, asks, bids) in depths.items():
-            for handler, pairs in bot.depthHandlers:
-                if p in pairs:
-                    try:
-                        handler(t, p, asks, bids)
-                    except:
-                        bot.onDepthHandlingError(p, handler, traceback.format_exc())
-                    
+                   
         # Collect the set of pairs for which we should get trade history.
         tradeHistoryPairs = set()
         for handler, pairs in bot.tradeHistoryHandlers:
@@ -43,11 +37,20 @@ def _runBot(bot):
         tradeHistories = {}
         for p in tradeHistoryPairs:
             try:
-                trades = btceapi.getTradeHistory(p)
+                trades = btceapi.getTradeHistory(p, conn)
                 tradeHistories[p] = (datetime.datetime.now(), trades)
             except:
                 bot.onTradeHistoryRetrievalError(p, traceback.format_exc())
-                
+        conn.close()
+
+        for p, (t, asks, bids) in depths.items():
+            for handler, pairs in bot.depthHandlers:
+                if p in pairs:
+                    try:
+                        handler(t, p, asks, bids)
+                    except:
+                        bot.onDepthHandlingError(p, handler, traceback.format_exc())
+       
         for p, (t, trades) in tradeHistories.items():
             # Merge new trades into the bot's history.
             bot.mergeTradeHistory(p, trades)

@@ -32,7 +32,8 @@ class RangeTrader(btcebot.TraderBase):
         self.fee_adjustment = decimal.Decimal("0.998")
         
     def _attemptBuy(self, price, amount):
-        info = self.api.getInfo()
+        conn = btceapi.BTCEConnection()
+        info = self.api.getInfo(conn)
         curr1, curr2 = self.pair.split("_")
         
         # Limit order to what we can afford to buy.
@@ -43,15 +44,16 @@ class RangeTrader(btcebot.TraderBase):
             print "attempting to buy %s %s at %s for %s %s" % (buy_amount, 
                 curr1.upper(), price, buy_amount*price, curr2.upper())
             if self.live_trades:
-                r = self.api.trade(self.pair, "buy", price, buy_amount)
+                r = self.api.trade(self.pair, "buy", price, buy_amount, conn)
                 print "\tReceived %s %s" % (r.received, curr1.upper())
                 # If the order didn't fill completely, cancel the remaining order
                 if r.order_id != 0:
                     print "\tCanceling unfilled portion of order"
-                    self.api.cancelOrder(r.order_id)
+                    self.api.cancelOrder(r.order_id, conn)
 
     def _attemptSell(self, price, amount):
-        info = self.api.getInfo()
+        conn = btceapi.BTCEConnection()
+        info = self.api.getInfo(conn)
         curr1, curr2 = self.pair.split("_")
         
         # Limit order to what we have available to sell.
@@ -61,12 +63,12 @@ class RangeTrader(btcebot.TraderBase):
             print "attempting to sell %s %s at %s for %s %s" % (sell_amount,
                 curr1.upper(), price, sell_amount*price, curr2.upper())
             if self.live_trades:
-                r = self.api.trade(self.pair, "sell", price, sell_amount)
+                r = self.api.trade(self.pair, "sell", price, sell_amount, conn)
                 print "\tReceived %s %s" % (r.received, curr2.upper())
                 # If the order didn't fill completely, cancel the remaining order
                 if r.order_id != 0:
                     print "\tCanceling unfilled portion of order"
-                    self.api.cancelOrder(r.order_id)
+                    self.api.cancelOrder(r.order_id, conn)
             
     # This overrides the onNewDepth method in the TraderBase class, so the 
     # framework will automatically pick it up and send updates to it.
@@ -87,10 +89,10 @@ def onBotError(msg, tracebackText):
             
 def run(key_file, buy_floor, sell_ceiling, live_trades):        
     # Load the keys and create an API object from the first one.
-    handler = btceapi.KeyHandler(key_file, resaveOnDeletion=True)
+    handler = btceapi.KeyHandler(key_file)
     key = handler.getKeys()[0]
     print "Trading with key %s" % key
-    api = btceapi.TradeAPI(key, handler=handler)
+    api = btceapi.TradeAPI(key, handler)
             
     # Create a trader that handles LTC/USD trades in the given range.
     trader = RangeTrader(api, "ltc_usd", buy_floor, sell_ceiling, live_trades)

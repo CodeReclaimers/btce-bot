@@ -1,0 +1,9 @@
+Changes in 0.3:
+  - Changed version number to be in sync with btce-api library.
+  - Use a single BTCEConnection to retrieve all depth and trade history
+    from the public API.
+  - In the main bot loop, request all API data in one shot before calling
+    any trader update handlers.
+  - In the hello-world-bot.py sample, use a single BTCEConnection to 
+    make trading calls in _attemptBuy and _attemptSell.
+
