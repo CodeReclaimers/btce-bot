@@ -1,12 +1,16 @@
 #!/usr/bin/env python
-
-from distutils.core import setup
+from setuptools import setup
 
 setup(name='btce-bot',
-      version='0.3',
-      description='A framework for building trading bots for BTC-e.com.',
-      author='Alan McIntyre',
-      author_email='alan.mcintyre@gmail.com',
-      url='https://github.com/alanmcintyre/btce-bot',
-      packages=['btcebot'],
-     )
+    version='0.3',
+    author='CodeReclaimers, LLC',
+    author_email='alan@codereclaimers.com',
+    url='https://github.com/CodeReclaimers/btce-bot',
+    license="MIT",
+    description='A framework for building trading bots for the digital currency trading site BTC-e.com.',
+    packages=['btcebot'],
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers'
+    ]
+)
