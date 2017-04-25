@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Alan McIntyre
+# Copyright (c) 2013-2017 CodeReclaimers, LLC
 
 class TraderBase(object):
     def __init__(self, pairs):

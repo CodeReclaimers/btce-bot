@@ -1,6 +1,9 @@
 btce-bot
 ========
 
+NOTE: An update to use the most recent [btce-api library](https://github.com/codereclaimers/btce-api)
+is in progress. Until this is complete much of the code here will not work. 
+
 NOTE: This is NOT a library of ready-made bots; it's a library that (hopefully)
 makes it easier to write your own bot, because you won't have to fuss with
 a bunch of low-level grunt work.  It's still a work in progress, so if you'd
@@ -8,14 +11,8 @@ like something implemented please feel free to ask for it!
 
 This library provides a simple framework for building trading bots for the 
 BTC-e.com exchange site.  So that you don't have to spend your time chasing
-down wacky dependencies, it depends only on my btce-api library:
-
-    https://github.com/alanmcintyre/btce-api
-    
-and the following standard libraries that are "batteries included" with a
-Python 2.7 installation: 
-
-    datetime, decimal, threading, time
+down wacky dependencies, it depends only on the Python standard library and 
+the [btce-api library](https://github.com/codereclaimers/btce-api).    
 
 NOTE: BTC-e is not affiliated with this project.  Use at your own risk.
 

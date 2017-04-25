@@ -1,4 +1,4 @@
-# Copyright (c) 2013 Alan McIntyre
+# Copyright (c) 2013-2017 CodeReclaimers, LLC
 
 import cPickle
 import datetime
@@ -20,7 +20,7 @@ sqlite3.register_adapter(decimal.Decimal, adapt_decimal)
 sqlite3.register_converter("DECIMAL", convert_decimal)
 
 class MarketDatabase(object):
-    def __init__(self, database_path):
+    def __init__(self, database_path, all_pairs):
         create = not os.path.isfile(database_path)
         self.connection = sqlite3.connect(database_path)
         self.cursor = self.connection.cursor()
@@ -29,7 +29,7 @@ class MarketDatabase(object):
             self.createTables()
             
             # Pairs table
-            pairs = zip(range(len(btceapi.all_pairs)), btceapi.all_pairs)
+            pairs = zip(range(len(all_pairs)), all_pairs)
             self.cursor.executemany("INSERT INTO pairs VALUES(?, ?)", pairs)
             self.pair_to_index = dict((p, i) for i, p in pairs)
             self.index_to_pair = dict(pairs)
@@ -73,14 +73,14 @@ class MarketDatabase(object):
                 trade_type INT,
                 price DECIMAL,
                 amount DECIMAL,
-                date TIMESTAMP,
+                timestamp INT,
                 FOREIGN KEY(pair) REFERENCES pairs(id),
                 FOREIGN KEY(trade_type) REFERENCES trade_types(id)
             );''')
 
         self.cursor.execute('''
             CREATE TABLE depth(
-                date TIMESTAMP,
+                timestamp INT,
                 pair INT,
                 asks BLOB,
                 bids BLOB,
@@ -98,10 +98,10 @@ class MarketDatabase(object):
     def tupleFromTrade(self, t):
         return (t.tid,
                 self.pair_to_index[t.pair],
-                self.tradetype_to_index[t.trade_type],
+                self.tradetype_to_index[t.type],
                 t.price,
                 t.amount,
-                t.date)    
+                t.timestamp)
     
     def insertTradeHistory(self, trade_data):
         '''

@@ -1,12 +1,13 @@
-# Copyright (c) 2013 Alan McIntyre
+# Copyright (c) 2013-2017 CodeReclaimers, LLC
 
 import datetime
+import decimal
 import threading
 import time
 import traceback
 
 import btceapi
-from btceapi.common import validatePair
+import sys
 
 from trader import TraderBase
 
@@ -61,7 +62,9 @@ def _runBot(bot):
                     try:
                         handler(t, p, bot.tradeHistoryItems[p])
                     except:
-                        bot.onTradeHistoryHandlingError(p, handler, traceback.format_exc())
+                        exc_type, exc_value, exc_traceback = sys.exc_info()
+                        tb = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                        bot.onTradeHistoryHandlingError(p, handler, tb)
                         
         # Tell all bots that have requested it that we're at the end
         # of an update loop.
@@ -82,7 +85,8 @@ def _runBot(bot):
     
             
 class Bot(object):
-    def __init__(self, bufferSpanMinutes=10):
+    def __init__(self, api, bufferSpanMinutes=10):
+        self.api = api
         self.bufferSpanMinutes = bufferSpanMinutes
         self.depthHandlers = []
         self.tradeHistoryHandlers = []
@@ -143,10 +147,10 @@ class Bot(object):
         newItems = []
         
         # Remove old items
-        now = datetime.datetime.now()
-        dt = datetime.timedelta(minutes = self.bufferSpanMinutes)
+        now = decimal.Decimal(time.time())
+        dt_sec = self.bufferSpanMinutes * 60
         for h in prevItems:
-            if h.date - now > dt:
+            if now - h.timestamp > dt_sec:
                 keys.remove(h.tid)
             else:
                 keys.add(h.tid)
@@ -172,15 +176,15 @@ class Bot(object):
             
         self.traders.add(trader)
         
-    def addDepthHandler(self, handler, pairs=btceapi.all_pairs):
+    def addDepthHandler(self, handler, pairs):
         for p in pairs:
-            validatePair(p)
-          
+            self.api.validate_pair(p)
+
         self.depthHandlers.append((handler, pairs))
         
-    def addTradeHistoryHandler(self, handler, pairs=btceapi.all_pairs):
+    def addTradeHistoryHandler(self, handler, pairs):
         for p in pairs:
-            validatePair(p)
+            self.api.validate_pair(p)
 
         self.tradeHistoryHandlers.append((handler, pairs))
         

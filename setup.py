@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='btce-bot',
-    version='0.3',
+    version='0.9',
     author='CodeReclaimers, LLC',
     author_email='alan@codereclaimers.com',
     url='https://github.com/CodeReclaimers/btce-bot',

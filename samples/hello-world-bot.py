@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (c) 2013 Alan McIntyre
+# Copyright (c) 2013-2017 CodeReclaimers, LLC
 
 import decimal
 import time

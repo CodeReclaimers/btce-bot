@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (c) 2013 Alan McIntyre
+# Copyright (c) 2013-2017 CodeReclaimers, LLC
 
 import time
 
@@ -11,7 +11,8 @@ class MarketDataLogger(btcebot.TraderBase):
     This "trader" simply logs all of the updates it receives from the bot.
     '''
     
-    def __init__(self, pairs, database_path):
+    def __init__(self, api, pairs, database_path):
+        self.api = api
         btcebot.TraderBase.__init__(self, pairs)
         self.database_path = database_path
         self.db = None
@@ -21,7 +22,7 @@ class MarketDataLogger(btcebot.TraderBase):
         # The database is lazily created here instead of the constructor
         # so that it can be created and used in the bot's thread.
         if self.db is None:
-            self.db = btcebot.MarketDatabase(self.database_path)
+            self.db = btcebot.MarketDatabase(self.database_path, self.api.pair_names)
 
         return self.db
     
@@ -54,11 +55,13 @@ def onBotError(msg, tracebackText):
         "%s - %s\n%s\n%s\n" % (tstr, msg, tracebackText, "-"*80))
             
 def run(database_path):
-    logger= MarketDataLogger(btceapi.all_pairs, database_path)
-    #logger= MarketDataLogger(("btc_usd", "ltc_usd"), database_path)
+    conn = btceapi.BTCEConnection()
+    api = btceapi.APIInfo(conn)
+    #logger = MarketDataLogger(api.pair_names, database_path)
+    logger = MarketDataLogger(api, ("btc_usd", "ltc_usd"), database_path)
 
     # Create a bot and add the logger to it.
-    bot = btcebot.Bot()
+    bot = btcebot.Bot(api)
     bot.addTrader(logger)
 
     # Add an error handler so we can print info about any failures
@@ -84,7 +87,7 @@ def run(database_path):
         
 if __name__ == '__main__':
     import argparse
-    parser = argparse.ArgumentParser(description='Simple range trader example.')
+    parser = argparse.ArgumentParser(description='Data logging example.')
     parser.add_argument('--db-path', default='btce.db',
                         help='Path to the logger database.')
 
