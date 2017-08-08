@@ -1,8 +1,7 @@
 btce-bot
 ========
 
-NOTE: An update to use the most recent [btce-api library](https://github.com/codereclaimers/btce-api)
-is in progress. Until this is complete much of the code here will not work. 
+NOTE: Due to the apparent closure of BTC-e, this repository is no longer being maintained.  If BTC-e returns, I may resume maintenance.
 
 NOTE: This is NOT a library of ready-made bots; it's a library that (hopefully)
 makes it easier to write your own bot, because you won't have to fuss with
