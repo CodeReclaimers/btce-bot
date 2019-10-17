@@ -1,7 +1,9 @@
 btce-bot
 ========
 
-NOTE: Due to the apparent closure of BTC-e, this repository is no longer being maintained.  If BTC-e returns, I may resume maintenance.
+NOTE: Due to the closure of BTC-e, this repository is no longer being maintained. 
+I am leaving it here in case some of the code proves useful for the development of 
+similar tools for other exchanges.
 
 NOTE: This is NOT a library of ready-made bots; it's a library that (hopefully)
 makes it easier to write your own bot, because you won't have to fuss with
